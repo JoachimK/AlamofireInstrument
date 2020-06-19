@@ -1,0 +1,167 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 50;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		A8E1DB2D249D02CA0027A76D /* AlamofireInstrument.instrpkg in Sources */ = {isa = PBXBuildFile; fileRef = A8E1DB2C249D02CA0027A76D /* AlamofireInstrument.instrpkg */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		A8E1DB29249D02CA0027A76D /* AlamofireInstrument.instrdst */ = {isa = PBXFileReference; explicitFileType = com.apple.instruments.instrdst; includeInIndex = 0; path = AlamofireInstrument.instrdst; sourceTree = BUILT_PRODUCTS_DIR; };
+		A8E1DB2C249D02CA0027A76D /* AlamofireInstrument.instrpkg */ = {isa = PBXFileReference; lastKnownFileType = "com.apple.instruments.package-definition"; path = AlamofireInstrument.instrpkg; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		A8E1DB22249D02CA0027A76D = {
+			isa = PBXGroup;
+			children = (
+				A8E1DB2B249D02CA0027A76D /* AlamofireInstrument */,
+				A8E1DB2A249D02CA0027A76D /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		A8E1DB2A249D02CA0027A76D /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				A8E1DB29249D02CA0027A76D /* AlamofireInstrument.instrdst */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		A8E1DB2B249D02CA0027A76D /* AlamofireInstrument */ = {
+			isa = PBXGroup;
+			children = (
+				A8E1DB2C249D02CA0027A76D /* AlamofireInstrument.instrpkg */,
+			);
+			path = AlamofireInstrument;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		A8E1DB28249D02CA0027A76D /* AlamofireInstrument */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A8E1DB2E249D02CA0027A76D /* Build configuration list for PBXNativeTarget "AlamofireInstrument" */;
+			buildPhases = (
+				A8E1DB27249D02CA0027A76D /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = AlamofireInstrument;
+			productName = AlamofireInstrument;
+			productReference = A8E1DB29249D02CA0027A76D /* AlamofireInstrument.instrdst */;
+			productType = "com.apple.product-type.instruments-package";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		A8E1DB23249D02CA0027A76D /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 1150;
+				ORGANIZATIONNAME = "Joachim Kurz";
+				TargetAttributes = {
+					A8E1DB28249D02CA0027A76D = {
+						CreatedOnToolsVersion = 11.5;
+					};
+				};
+			};
+			buildConfigurationList = A8E1DB26249D02CA0027A76D /* Build configuration list for PBXProject "AlamofireInstrument" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = A8E1DB22249D02CA0027A76D;
+			productRefGroup = A8E1DB2A249D02CA0027A76D /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				A8E1DB28249D02CA0027A76D /* AlamofireInstrument */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		A8E1DB27249D02CA0027A76D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A8E1DB2D249D02CA0027A76D /* AlamofireInstrument.instrpkg in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		A8E1DB24249D02CA0027A76D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+			};
+			name = Debug;
+		};
+		A8E1DB25249D02CA0027A76D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+			};
+			name = Release;
+		};
+		A8E1DB2F249D02CA0027A76D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 439UGKBMP3;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Instruments/Packages";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				VERSIONING_SYSTEM = "";
+			};
+			name = Debug;
+		};
+		A8E1DB30249D02CA0027A76D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 439UGKBMP3;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Instruments/Packages";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				VERSIONING_SYSTEM = "";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		A8E1DB26249D02CA0027A76D /* Build configuration list for PBXProject "AlamofireInstrument" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A8E1DB24249D02CA0027A76D /* Debug */,
+				A8E1DB25249D02CA0027A76D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A8E1DB2E249D02CA0027A76D /* Build configuration list for PBXNativeTarget "AlamofireInstrument" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A8E1DB2F249D02CA0027A76D /* Debug */,
+				A8E1DB30249D02CA0027A76D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = A8E1DB23249D02CA0027A76D /* Project object */;
+}
