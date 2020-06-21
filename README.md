@@ -15,6 +15,6 @@ If you are using a different version of Alamofire or a different networking libr
 4. Build the app you want to profile for Profiling (Cmd+I).
 5. Instruments will open. Choose the blank template and add the os_signpost instrument, to verify that there are os_signpost intervalls for `org.alamofire`.
 6. If nothing appears in Instruments, ensure that [the `OS_ACTIVITY_MODE` environment variable is not set](https://stackoverflow.com/a/57187309/1956359).
-7. Once that works, open the Xcode project in this repository. Run it monochrome (gray?) Instruments app will open. Choose a blank template, click the Plus-button in the top right and find the "Alamofire" instrument in the list to add to your template.
-8. Choose the app and device you want to profile in the top left. Hit record. Your app should start now and you should see requests coming in.
+7. Once that works, open the Xcode project in this repository. A monochrome (gray?) Instruments app will open. Choose a blank template, click the Plus-button in the top right and find the "Alamofire" instrument in the list to add to your template.
+8. Choose the app and device you want to profile in the target area in the top left. Hit record. Your app should start now and you should see requests coming in.
 
