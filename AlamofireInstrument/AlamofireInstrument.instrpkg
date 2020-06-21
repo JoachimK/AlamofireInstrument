@@ -14,6 +14,85 @@
     <!--   Generated modelers: 'os-log-point-schema', 'os-signpost-interval-schema', 'ktrace-point-schema', 'ktrace-interval-schema' -->
     <!--   Custom modeler required: 'point-schema', 'interval-schema' -->
     <!-- To use existing schemas from other packages, declare 'import-schema' elements -->
+    
+    <os-signpost-interval-schema>
+        <id>org-alamofire-networking-schema</id>
+        <title>Alamofire Networking Schema</title>
+        
+        <subsystem>"org.alamofire"</subsystem>
+        <category>"networking"</category>
+        <name>"Request"</name>
+        
+        <start-pattern>
+            <message>"Request Method " ?http-method " to host: " ?host ", path: " ?url-path ", parameters: " ?query-parameters</message>
+        </start-pattern>
+        <end-pattern>
+            <message>"Status: " ?completion-status ", Bytes Received: " ?bytes-received ", error: " ?errored ", statusCode: " ?http-status-code</message>
+        </end-pattern>
+        
+        <column>
+            <mnemonic>column-http-method</mnemonic>
+            <title>HTTP Method</title>
+            <type>string</type>
+            <expression>?http-method</expression>
+        </column>
+        
+        <column>
+            <mnemonic>column-host</mnemonic>
+            <title>Host</title>
+            <type>string</type>
+            <expression>?host</expression>
+        </column>
+        
+        <column>
+            <mnemonic>column-url-path</mnemonic>
+            <title>URL Path</title>
+            <type>string</type>
+            <expression>?url-path</expression>
+        </column>
+        
+        <column>
+            <mnemonic>column-query-parameters</mnemonic>
+            <title>Query Parameters</title>
+            <type>string</type>
+            <expression>?query-parameters</expression>
+        </column>
+        
+        <column>
+            <mnemonic>column-completion-status</mnemonic>
+            <title>Completion</title>
+            <type>string</type>
+            <expression>?completion-status</expression>
+        </column>
+        
+        <column>
+            <mnemonic>column-size</mnemonic>
+            <title>Bytes Loaded</title>
+            <type>size-in-bytes</type>
+            <expression>?bytes-received</expression>
+        </column>
+        
+        <column>
+            <mnemonic>column-errored</mnemonic>
+            <title>Had Error</title>
+            <type>boolean</type>
+            <expression>?errored</expression>
+        </column>
+        
+        <column>
+            <mnemonic>column-status-code</mnemonic>
+            <title>Status Code</title>
+            <type>uint32</type>
+            <expression>?http-status-code</expression>
+        </column>
+        
+        <column>
+            <mnemonic>column-response</mnemonic>
+            <title>Reponse</title>
+            <type>event-concept</type>
+            <expression>(if (&gt; ?errored 0) then "Failure" else (if (&gt; ?http-status-code 399) then "Error" else "Success"))</expression>
+        </column>
+    </os-signpost-interval-schema>
 
     <!-- MARK: Modeler Declarations -->
     <!-- If there are schemas defined that require a custom modeler, each can be declared with a 'modeler' element -->
@@ -22,7 +101,230 @@
     <!-- MARK: Instrument Definitions -->
     <!-- Instruments record and display data, creating concrete table requirements that instance modelers and data streams. -->
     <!-- Any number of 'instrument' elements can be defined; each instrument should provide a cohesive graph and detail experience. -->
+    
+    <augmentation>
+        <id>org.alamofire.aug.by-host</id>
+        <title>Show Requests by Host</title>
+        <purpose>Shows Requests broken down by host.</purpose>
+    
+        <slice-type-hierarchy>
+             <level>
+                 <slice-type>string</slice-type>
+             </level>
+        </slice-type-hierarchy>
+        
+        <create-table>
+            <id>alamofire-requests-augmentation-by-host</id>
+            <schema-ref>org-alamofire-networking-schema</schema-ref>
+        </create-table>
+        
+        <add-graph>
+            <title>HTTP Requests</title>
+            <lane>
+                <title>HTTP Requests</title>
+                <table-ref>alamofire-requests-augmentation-by-host</table-ref>
+                <slice-by-hierarchy>
+                    <slice-by-column>column-host</slice-by-column>
+                </slice-by-hierarchy>
+                
+                <!-- plot, plot-template or histogram elements -->
+                <plot>
+                    <value-from>column-url-path</value-from>
+                    <color-from>column-response</color-from>
+                    <label-from>column-url-path</label-from>
+                </plot>
+            </lane>
+        </add-graph>
+        
+        <add-list>
+            <title>List: Requests</title>
+            <purpose>Lists Requests for this host</purpose>
+            <table-ref>alamofire-requests-augmentation-by-host</table-ref>
+            
+            <slice-by-hierarchy>
+                <slice-by-column>column-host</slice-by-column>
+            </slice-by-hierarchy>
+            
+            <column>start</column>
+            <column>duration</column>
+            <column>column-completion-status</column>
+            <column>column-http-method</column>
+            <column>column-url-path</column>
+            <column>column-query-parameters</column>
+            <column>column-completion-status</column>
+            <column>column-errored</column>
+            <column>column-status-code</column>
+        </add-list>
+    </augmentation>
+    
+    <augmentation>
+        <id>org.alamofire.aug.by-host-and-path</id>
+        <title>Show Requests by Host and Path</title>
+        <purpose>Shows Requests broken down by host and path.</purpose>
+    
+        <slice-type-hierarchy>
+             <level>
+                 <slice-type>string</slice-type>
+             </level>
+             <level>
+                 <slice-type>string</slice-type>
+             </level>
+        </slice-type-hierarchy>
+        
+        <create-table>
+            <id>alamofire-requests-augmentation-by-host-and-path</id>
+            <schema-ref>org-alamofire-networking-schema</schema-ref>
+        </create-table>
+        
+        <add-graph>
+            <title>HTTP Requests</title>
+            <lane>
+                <title>HTTP Requests</title>
+                <table-ref>alamofire-requests-augmentation-by-host-and-path</table-ref>
+                <slice-by-hierarchy>
+                    <slice-by-column>column-host</slice-by-column>
+                    <slice-by-column>column-url-path</slice-by-column>
+                </slice-by-hierarchy>
+                
+                <!-- plot, plot-template or histogram elements -->
+                <plot>
+                    <value-from>column-http-method</value-from>
+                    <color-from>column-response</color-from>
+                    <label-from>column-query-parameters</label-from>
+                </plot>
+            </lane>
+        </add-graph>
+        
+        <add-list>
+            <title>List: Requests</title>
+            <purpose>Lists Requests for this host and path</purpose>
+            <table-ref>alamofire-requests-augmentation-by-host-and-path</table-ref>
+            
+            <slice-by-hierarchy>
+                <slice-by-column>column-host</slice-by-column>
+                <slice-by-column>column-url-path</slice-by-column>
+            </slice-by-hierarchy>
+            
+            <column>start</column>
+            <column>duration</column>
+            <column>column-completion-status</column>
+            <column>column-http-method</column>
+            <column>column-query-parameters</column>
+            <column>column-completion-status</column>
+            <column>column-errored</column>
+            <column>column-status-code</column>
+        </add-list>
+    </augmentation>
 
+    
+    <instrument>
+        <id>org.alamofire.networking.instrument</id>
+        <title>Alamofire</title>
+        <category>Behavior</category>
+        <purpose>Trace HTTP calls made via Alamofire, grouped by method, host, path, etc.</purpose>
+        <icon>Network</icon>
+        
+        <create-table>
+            <id>alamofire-requests</id>
+            <schema-ref>org-alamofire-networking-schema</schema-ref>
+        </create-table>
+        
+        <activate-augmentation>org.alamofire.aug.by-host</activate-augmentation>
+        <activate-augmentation>org.alamofire.aug.by-host-and-path</activate-augmentation>
+        
+        <!-- Define graph to draw for your Instrument (optional) -->
+        <graph>
+            <title>HTTP Requests</title>
+            <lane>
+                <title>the Requests</title>
+                <table-ref>alamofire-requests</table-ref>
+                
+                <!-- plot, plot-template or histogram elements -->
+                <plot-template>
+                    <instance-by>column-host</instance-by>
+                    <label-format>%s</label-format>
+                    <value-from>column-url-path</value-from>
+                    <color-from>column-response</color-from>
+                    <label-from>column-url-path</label-from>
+                </plot-template>
+            </lane>
+        </graph>
+        
+        <!-- Define at least one detail view for your Instrument -->
+        <aggregation>
+            <title>Summary: Completed Requests</title>
+            <table-ref>alamofire-requests</table-ref>
+            <slice>
+                    <column>column-completion-status</column>
+                    <equals><string>Completed</string></equals>
+            </slice>
+            <hierarchy>
+                <level>
+                    <column>column-host</column>
+                </level>
+                <level>
+                    <column>column-url-path</column>
+                </level>
+            </hierarchy>
+            
+            <column><count/></column>
+            <column><average>duration</average></column>
+            <column><max>duration</max></column>
+            <column><sum>column-size</sum></column>
+            <column><average>column-size</average></column>
+        </aggregation>
+        
+        <list>
+            <title>List: Requests</title>
+            <table-ref>alamofire-requests</table-ref>
+            <column>start</column>
+            <column>duration</column>
+            <column>column-completion-status</column>
+            <column>column-host</column>
+            <column>column-http-method</column>
+            <column>column-url-path</column>
+            <column>column-query-parameters</column>
+            <column>column-completion-status</column>
+            <column>column-errored</column>
+            <column>column-status-code</column>
+        </list>
+        
+        <aggregation>
+            <title>Summary: Requests by Status</title>
+            <table-ref>alamofire-requests</table-ref>
+            <slice>
+                    <column>column-completion-status</column>
+                    <equals><string>Completed</string></equals>
+            </slice>
+            <hierarchy>
+                <level>
+                    <column>column-host</column>
+                </level>
+                <level>
+                    <column>column-completion-status</column>
+                </level>
+            </hierarchy>
+            
+            <column><count/></column>
+            <column><average>duration</average></column>
+            <column><max>duration</max></column>
+            <column><sum>column-size</sum></column>
+            <column><average>column-size</average></column>
+        </aggregation>
+        
+        <engineering-type-track>
+            <table-ref>alamofire-requests</table-ref>
+            <hierarchy>
+                <level>
+                    <column>column-host</column>
+                </level>
+                <level>
+                    <column>column-url-path</column>
+                </level>
+            </hierarchy>
+        </engineering-type-track>
+    </instrument>
+    
     <!-- MARK: Embed Templates -->
     <!-- Templates may be included and represent a collection of tools configured for a specific tracing workflow -->
     <!-- Each 'template' element specifies the relative path to a .tracetemplate file in the project -->
